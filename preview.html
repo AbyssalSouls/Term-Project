@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PCParts Marketplace</title>
+
+    <style>
+        :root {
+            --navy: #131921;
+            --charcoal: #232f3e;
+            --orange: #ff9900;
+            --yellow: #ffd814;
+            --blue: #007185;
+            --green: #067d62;
+            --background: #eaeded;
+            --white: #ffffff;
+            --text: #111111;
+            --muted: #5f6368;
+            --border: #d5d9d9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            color: var(--text);
+            background: var(--background);
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        header {
+            color: white;
+            background: var(--navy);
+        }
+
+        .top-header {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            min-height: 72px;
+            padding: 12px 5%;
+        }
+
+        .logo {
+            color: white;
+            font-size: 27px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .logo span {
+            color: var(--orange);
+        }
+
+        .tagline {
+            display: block;
+            color: #c8d0d8;
+            font-size: 10px;
+            font-weight: normal;
+            letter-spacing: 1px;
+        }
+
+        .search {
+            display: flex;
+            flex: 1;
+            max-width: 780px;
+            height: 44px;
+        }
+
+        .search input {
+            flex: 1;
+            border: none;
+            padding: 0 16px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .search button {
+            width: 58px;
+            border: none;
+            background: var(--orange);
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .search button:hover {
+            background: #e68a00;
+        }
+
+        .header-item {
+            color: white;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        .header-item strong {
+            display: block;
+            font-size: 15px;
+        }
+
+        nav {
+            display: flex;
+            gap: 28px;
+            padding: 11px 5%;
+            background: var(--charcoal);
+        }
+
+        nav a {
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            color: var(--orange);
+        }
+
+        .hero {
+            display: flex;
+            align-items: center;
+            min-height: 285px;
+            padding: 42px 9%;
+            color: white;
+            background:
+                linear-gradient(90deg, rgba(19, 25, 33, .96), rgba(19, 25, 33, .35)),
+                linear-gradient(135deg, #182a3d, #4d7180 52%, #cb762e);
+        }
+
+        .hero-content {
+            max-width: 650px;
+        }
+
+        .hero h1 {
+            margin-bottom: 12px;
+            font-size: 42px;
+        }
+
+        .hero p {
+            margin-bottom: 24px;
+            color: #e8edf0;
+            font-size: 18px;
+        }
+
+        .hero button,
+        .add-button {
+            border: 1px solid #a88734;
+            border-radius: 20px;
+            padding: 11px 23px;
+            background: var(--yellow);
+            color: var(--text);
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .hero button:hover,
+        .add-button:hover {
+            background: #f7ca00;
+        }
+
+        main {
+            max-width: 1400px;
+            margin: 26px auto;
+            padding: 0 25px;
+        }
+
+        .section-title {
+            margin-bottom: 15px;
+            font-size: 25px;
+        }
+
+        .category-grid,
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .category-card,
+        .product-card {
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            background: var(--white);
+        }
+
+        .category-card {
+            padding: 17px;
+            text-align: center;
+        }
+
+        .category-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, .12);
+        }
+
+        .category-icon {
+            display: grid;
+            place-items: center;
+            height: 125px;
+            margin-bottom: 13px;
+            border-radius: 5px;
+            background: linear-gradient(135deg, #eef3f6, #c8d9df);
+            font-size: 58px;
+        }
+
+        .category-card h3 {
+            margin-bottom: 5px;
+            font-size: 17px;
+        }
+
+        .category-card p {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .product-card {
+            display: flex;
+            min-height: 390px;
+            flex-direction: column;
+            padding: 17px;
+            transition: .2s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 5px 14px rgba(0, 0, 0, .15);
+        }
+
+        .part-image {
+            display: grid;
+            place-items: center;
+            height: 185px;
+            margin-bottom: 13px;
+            border-radius: 5px;
+            background: linear-gradient(135deg, #f5f5f5, #dbe6ea);
+            font-size: 76px;
+        }
+
+        .product-name {
+            margin-bottom: 7px;
+            color: var(--blue);
+            font-size: 17px;
+            line-height: 1.3;
+        }
+
+        .product-name:hover {
+            text-decoration: underline;
+        }
+
+        .rating {
+            margin-bottom: 8px;
+            color: #de7921;
+            font-size: 14px;
+        }
+
+        .specs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        .spec {
+            padding: 4px 7px;
+            border-radius: 3px;
+            color: #39434c;
+            background: #eef3f6;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .price {
+            margin: 4px 0;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .compatibility {
+            margin-bottom: 7px;
+            color: var(--green);
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .shipping {
+            margin-bottom: 13px;
+            color: var(--green);
+            font-size: 13px;
+        }
+
+        .add-button {
+            width: 100%;
+            margin-top: auto;
+        }
+
+        .builder-banner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 30px;
+            padding: 25px 30px;
+            border-radius: 5px;
+            color: white;
+            background: var(--charcoal);
+        }
+
+        .builder-banner h2 {
+            margin-bottom: 5px;
+        }
+
+        .builder-banner p {
+            color: #d8dee3;
+        }
+
+        .builder-banner button {
+            border: 1px solid #d5d9d9;
+            border-radius: 20px;
+            padding: 10px 20px;
+            color: var(--navy);
+            background: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        footer {
+            padding: 30px 8%;
+            color: white;
+            background: var(--charcoal);
+            text-align: center;
+        }
+
+        footer p {
+            color: #d4d9de;
+            font-size: 13px;
+        }
+
+        @media (max-width: 900px) {
+            .top-header {
+                flex-wrap: wrap;
+            }
+
+            .logo {
+                width: 100%;
+                text-align: center;
+            }
+
+            .search {
+                order: 3;
+                flex-basis: 100%;
+            }
+
+            .category-grid,
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 560px) {
+            .header-item {
+                display: none;
+            }
+
+            nav {
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 14px;
+            }
+
+            .hero {
+                min-height: 250px;
+                padding: 35px 7%;
+            }
+
+            .hero h1 {
+                font-size: 31px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .category-grid,
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .builder-banner {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="top-header">
+            <div class="logo">
+                PC<span>Parts</span>
+                <small class="tagline">BUILD BETTER</small>
+            </div>
+
+            <div class="search">
+                <input id="searchInput" type="text"
+                    placeholder="Search GPUs, CPUs, RAM, SSDs, model numbers...">
+                <button onclick="searchParts()">🔍</button>
+            </div>
+
+            <div class="header-item">
+                Hello, sign in
+                <strong>Account & Lists</strong>
+            </div>
+
+            <div class="header-item">
+                🛒
+                <strong>Cart</strong>
+            </div>
+        </div>
+
+        <nav>
+            <a href="#">☰ All Parts</a>
+            <a href="#">Graphics Cards</a>
+            <a href="#">Processors</a>
+            <a href="#">Deals</a>
+            <a href="#">Build Guides</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Build your next PC with confidence.</h1>
+            <p>Compare powerful components, check compatibility, and find the parts your build needs.</p>
+            <button onclick="document.querySelector('.product-grid').scrollIntoView()">
+                Shop PC Parts
+            </button>
+        </div>
+    </section>
+
+    <main>
+        <h2 class="section-title">Shop by Component</h2>
+
+        <section class="category-grid">
+            <div class="category-card">
+                <div class="category-icon">🎮</div>
+                <h3>Graphics Cards</h3>
+                <p>GPU performance for gaming and creative work</p>
+            </div>
+
+            <div class="category-card">
+                <div class="category-icon">🧠</div>
+                <h3>Processors</h3>
+                <p>CPUs for gaming, streaming, and productivity</p>
+            </div>
+
+            <div class="category-card">
+                <div class="category-icon">💾</div>
+                <h3>Memory & Storage</h3>
+                <p>RAM, SSDs, and hard drives</p>
+            </div>
+
+            <div class="category-card">
+                <div class="category-icon">🖥️</div>
+                <h3>Motherboards</h3>
+                <p>Reliable foundations for every build</p>
+            </div>
+        </section>
+
+        <div class="builder-banner">
+            <div>
+                <h2>Not sure what parts are compatible?</h2>
+                <p>Use our compatibility checker to plan your build before you buy.</p>
+            </div>
+            <button onclick="checkCompatibility()">Check Compatibility</button>
+        </div>
+
+        <h2 class="section-title">Featured PC Parts</h2>
+
+        <section class="product-grid">
+            <article class="product-card">
+                <div class="part-image">🎮</div>
+                <div class="product-name">RTX Performance Graphics Card</div>
+                <div class="rating">★★★★★</div>
+
+                <div class="specs">
+                    <span class="spec">12 GB VRAM</span>
+                    <span class="spec">PCIe 4.0</span>
+                </div>
+
+                <div class="price">$499.99</div>
+                <div class="compatibility">✓ Compatible with your build</div>
+                <div class="shipping">FREE delivery available</div>
+                <button class="add-button" onclick="addToCart('Graphics Card')">
+                    Add to Cart
+                </button>
+            </article>
+
+            <article class="product-card">
+                <div class="part-image">🧠</div>
+                <div class="product-name">8-Core Desktop Processor</div>
+                <div class="rating">★★★★☆</div>
+
+                <div class="specs">
+                    <span class="spec">8 Cores</span>
+                    <span class="spec">AM5 Socket</span>
+                </div>
+
+                <div class="price">$279.99</div>
+                <div class="compatibility">✓ AM5 motherboard compatible</div>
+                <div class="shipping">FREE delivery available</div>
+                <button class="add-button" onclick="addToCart('Processor')">
+                    Add to Cart
+                </button>
+            </article>
+
+            <article class="product-card">
+                <div class="part-image">💾</div>
+                <div class="product-name">1 TB NVMe PCIe Solid State Drive</div>
+                <div class="rating">★★★★★</div>
+
+                <div class="specs">
+                    <span class="spec">1 TB</span>
+                    <span class="spec">PCIe 4.0</span>
+                </div>
+
+                <div class="price">$74.99</div>
+                <div class="compatibility">✓ M.2 2280 compatible</div>
+                <div class="shipping">FREE delivery available</div>
+                <button class="add-button" onclick="addToCart('NVMe SSD')">
+                    Add to Cart
+                </button>
+            </article>
+
+            <article class="product-card">
+                <div class="part-image">🖥️</div>
+                <div class="product-name">ATX Gaming Motherboard</div>
+                <div class="rating">★★★★☆</div>
+
+                <div class="specs">
+                    <span class="spec">AM5</span>
+                    <span class="spec">DDR5</span>
+                </div>
+
+                <div class="price">$189.99</div>
+                <div class="compatibility">✓ DDR5 memory supported</div>
+                <div class="shipping">FREE delivery available</div>
+                <button class="add-button" onclick="addToCart('Motherboard')">
+                    Add to Cart
+                </button>
+            </article>
+        </section>
+    </main>
+
+    <footer>
+        <p>PCParts Marketplace — Build better with confidence.</p>
+    </footer>
+
+    <script>
+        function addToCart(part) {
+            alert(part + " was added to your cart.");
+        }
+
+        function searchParts() {
+            const value = document.getElementById("searchInput").value.trim();
+
+            if (!value) {
+                alert("Enter a component, model number, or specification.");
+            } else {
+                alert("Searching PC parts for: " + value);
+            }
+        }
+
+        function checkCompatibility() {
+            alert("Compatibility checker opened.");
+        }
+    </script>
+
+</body>
+</html>
